@@ -1,0 +1,11 @@
+(copy_files# ../vendor/*.h)
+
+(library
+ (name blake3_mini)
+ (public_name blake3-mini)
+ (libraries unix)
+ (foreign_archives ../vendor/blake3)
+ (foreign_stubs
+  (language c)
+  (names blake3_stubs)
+  (flags -O3)))
