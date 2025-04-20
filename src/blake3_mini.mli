@@ -1,2 +1,21 @@
+module Digest : sig
+  type t
 
-val fd : Unix.file_descr -> string
+  val to_binary : t -> string
+
+  val to_hex : t -> string
+end
+
+type t
+
+val create : unit -> t
+
+val reset : t -> unit
+
+val feed_string :  t -> string -> pos:int -> len:int -> unit
+
+val feed_bytes :  t -> bytes -> pos:int -> len:int -> unit
+
+val digest : t -> Digest.t
+
+val fd : Unix.file_descr -> Digest.t
