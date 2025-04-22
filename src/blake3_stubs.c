@@ -14,13 +14,13 @@
 
 static inline value alloc_hash(blake3_hasher *hasher, int len) {
   value v_ret = caml_alloc_string(len);
-  blake3_hasher_finalize(hasher, String_val(v_ret), len);
+  const char *ret = String_val(v_ret);
+  blake3_hasher_finalize(hasher, String_val(ret), len);
   return v_ret;
 }
 
 CAMLprim value blake3_mini_fd(value v_fd) {
   CAMLparam1(v_fd);
-  CAMLlocal1(v_ret);
   int fd = Int_val(v_fd);
   caml_release_runtime_system();
 
@@ -34,6 +34,7 @@ CAMLprim value blake3_mini_fd(value v_fd) {
   }
 
   caml_acquire_runtime_system();
+  CAMLlocal1(v_ret);
   v_ret = alloc_hash(&hasher, 16);
   CAMLreturn(v_ret);
 }
@@ -51,13 +52,12 @@ static struct custom_operations blake3_mini_t_ops = {
 
 CAMLprim value blake3_mini_create(value v_unit) {
   CAMLparam1(v_unit);
-  CAMLlocal1(v_ret);
+  CAMLlocal1(v_t);
 
-  blake3_hasher hasher;
-  blake3_hasher_init(&hasher);
-
-  value v_t =
-      caml_alloc_custom(&blake3_mini_t_ops, sizeof(blake3_hasher *), 0, 1);
+  blake3_hasher *hasher = caml_stat_alloc(sizeof(blake3_hasher));
+  blake3_hasher_init(hasher);
+  v_t = caml_alloc_custom(&blake3_mini_t_ops, sizeof(blake3_hasher *), 0, 1);
+  Blake3_val(v_t) = hasher;
 
   CAMLreturn(v_t);
 }
@@ -81,13 +81,14 @@ CAMLprim value blake3_mini_digest(value v_t) {
   CAMLreturn(v_ret);
 }
 
-CAMLprim value blake3_mini_feed_string(value v_t, value v_s, value v_pos, value v_len) {
+CAMLprim value blake3_mini_feed_string(value v_t, value v_s, value v_pos,
+                                       value v_len) {
   CAMLparam4(v_t, v_s, v_pos, v_len);
 
   blake3_hasher *hasher = Blake3_val(v_t);
-  size_t len = Int_val(v_len);
+  const char *s = String_val(v_s);
   size_t pos = Int_val(v_pos);
-  char *s = String_val(v_s);
+  size_t len = Int_val(v_len);
   blake3_hasher_update(hasher, s + pos, len);
 
   CAMLreturn(Val_unit);
