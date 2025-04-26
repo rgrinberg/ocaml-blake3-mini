@@ -1,4 +1,4 @@
 (foreign_library
  (archive_name blake3)
  (language c)
- (names blake3 blake3_avx2 blake3_portable blake3_dispatch blake3_neon))
+ (names blake3 blake3_portable blake3_dispatch blake3_neon))
