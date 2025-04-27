@@ -1,7 +1,5 @@
 (rule
- (with-stdout-to
-  somefile
-  (echo 111XXXYYYZZ)))
+ (write-file somefile 111XXXYYYZZ))
 
 (library
  (name blake3_mini_tests)
