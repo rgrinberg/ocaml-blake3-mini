@@ -1,0 +1,34 @@
+(foreign_library
+ (archive_name blake3)
+ (language c)
+ (flags -mavx2)
+ (names blake3 blake3_portable blake3_dispatch blake3_avx2)
+ (extra_objects
+  blake3_avx2_x86-64_unix
+  blake3_avx512_x86-64_unix
+  blake3_sse2_x86-64_unix
+  blake3_sse41_x86-64_unix))
+
+(rule
+ (deps blake3_avx2_x86-64_unix.S)
+ (targets blake3_avx2_x86-64_unix.o)
+ (action
+  (run %{bin:cc} -c %{deps} -o %{targets})))
+
+(rule
+ (deps blake3_avx512_x86-64_unix.S)
+ (targets blake3_avx512_x86-64_unix.o)
+ (action
+  (run %{bin:cc} -c %{deps} -o %{targets})))
+
+(rule
+ (deps blake3_sse2_x86-64_unix.S)
+ (targets blake3_sse2_x86-64_unix.o)
+ (action
+  (run %{bin:cc} -c %{deps} -o %{targets})))
+
+(rule
+ (deps blake3_sse41_x86-64_unix.S)
+ (targets blake3_sse41_x86-64_unix.o)
+ (action
+  (run %{bin:cc} -c %{deps} -o %{targets})))

@@ -1,0 +1,21 @@
+(rule
+ (enabled_if
+  (= %{architecture} "aarch64"))
+ (action
+  (copy rules/blake3-aarch64.dune blake3_rules)))
+
+(rule
+ (enabled_if
+  (= %{architecture} "amd64"))
+ (action
+  (copy rules/blake3-amd64.dune blake3_rules)))
+
+(rule
+ (targets blake3_rules)
+ (enabled_if
+  (and
+   (<> %{architecture} "aarch64")
+   (<> %{architecture} "amd64")))
+ (action
+  (progn
+   (run echo "\"Blake3 Rules: Unsupported architecture: %{architecture}\""))))
