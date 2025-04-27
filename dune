@@ -1,21 +1,55 @@
-(rule
- (enabled_if
-  (= %{architecture} "aarch64"))
- (action
-  (copy rules/blake3-aarch64.dune blake3_rules)))
+; There are 4 "profiles" for the blake3 rules:
+; 1. Handwritten assembly for x86_64
+; 2. SIMD instructions with neon intrinsics for arm64
+; 3. SIMD instructions with x86 intrinsics for amd64
+; 4. Portable C implementation
+
+; TODO: Choose this during compile time
+
+(env
+ (blake3-amd64-asm
+  (env-vars
+   (BLAKE3_SIMD_TYPE "amd64-asm")))
+ (blake3-x86-intrinsics
+  (env-vars
+   (BLAKE3_SIMD_TYPE "x86-intrinsics")))
+ (blake3-neon-intrinsics
+  (env-vars
+   (BLAKE3_SIMD_TYPE "neon-intrinsics")))
+ (blake3-none
+  (env-vars
+   (BLAKE3_SIMD_TYPE "none")))
+ (_))
 
 (rule
  (enabled_if
-  (= %{architecture} "amd64"))
+  (or
+   (= %{env:BLAKE3_SIMD_TYPE=} "amd64-asm")
+   ;  (= %{architecture} "amd64")
+   ))
  (action
-  (copy rules/blake3-amd64.dune blake3_rules)))
+  (copy rules/blake3-amd64-asm.dune blake3_rules)))
 
 (rule
- (targets blake3_rules)
  (enabled_if
-  (and
-   (<> %{architecture} "aarch64")
-   (<> %{architecture} "amd64")))
+  (or
+   (= %{env:BLAKE3_SIMD_TYPE=} "neon-intrinsics")
+   ;  (= %{architecture} "aarch64")
+   ;  (= %{architecture} "arm64")
+   ))
  (action
-  (progn
-   (run echo "\"Blake3 Rules: Unsupported architecture: %{architecture}\""))))
+  (copy rules/blake3-neon-intrinsics.dune blake3_rules)))
+
+(rule
+ (enabled_if
+  (or
+   (= %{env:BLAKE3_SIMD_TYPE=} "x86-intrinsics")))
+ (action
+  (copy rules/blake3-x86-intrinsics.dune blake3_rules)))
+
+(rule
+ (enabled_if
+  (or
+   (= %{env:BLAKE3_SIMD_TYPE=} "none")))
+ (action
+  (copy rules/blake3-none.dune blake3_rules)))
