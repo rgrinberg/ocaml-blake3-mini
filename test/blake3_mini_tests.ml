@@ -15,13 +15,19 @@ let%expect_test "128 bits fd" =
   [%expect {| "7a7d692dfca02a756fea9a8a77903807" |}]
 ;;
 
-let%expect_test "digest with hasher" =
-  let chan = open_in "somefile" in
+let read_file name =
+  let chan = open_in name in
   let size = in_channel_length chan in
   let contents = really_input_string chan size in
   close_in chan;
+  contents
+;;
+
+let somefile = read_file "contents"
+
+let%expect_test "digest with hasher" =
   let hasher = Blake3_mini.create () in
-  Blake3_mini.feed_string hasher contents ~pos:0 ~len:(String.length contents);
+  Blake3_mini.feed_string hasher somefile ~pos:0 ~len:(String.length somefile);
   let digest = Blake3_mini.digest hasher in
   printf "%S\n" (Blake3_mini.Digest.to_hex digest);
   [%expect {| "7a7d692dfca02a756fea9a8a77903807" |}]
