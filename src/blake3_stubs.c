@@ -88,8 +88,8 @@ CAMLprim value blake3_mini_feed_string(value v_t, value v_s, value v_pos,
 
   blake3_hasher *hasher = Blake3_val(v_t);
   const char *s = String_val(v_s);
-  size_t pos = Int_val(v_pos);
-  size_t len = Int_val(v_len);
+  size_t pos = Long_val(v_pos);
+  size_t len = Long_val(v_len);
   blake3_hasher_update(hasher, s + pos, len);
 
   CAMLreturn(Val_unit);
