@@ -4,31 +4,127 @@
  (flags -O2 -mavx2)
  (names blake3 blake3_portable blake3_dispatch)
  (extra_objects
-  blake3_avx2_x86-64_unix
-  blake3_avx512_x86-64_unix
-  blake3_sse2_x86-64_unix
-  blake3_sse41_x86-64_unix))
+  blake3_avx2_x86-64
+  blake3_avx512_x86-64
+  blake3_sse2_x86-64
+  blake3_sse41_x86-64))
+
+; avx2
 
 (rule
+ (enabled_if
+  (<> %{os_type} "Win32"))
  (deps blake3_avx2_x86-64_unix.S)
- (targets blake3_avx2_x86-64_unix.o)
+ (targets blake3_avx2_x86-64.o)
  (action
   (run %{cc} -c %{deps} -o %{targets})))
 
 (rule
+ (enabled_if
+  (and
+   (= %{os_type} "Win32")
+   (= %{ocaml-config:ccomp_type} "cc")))
+ (deps blake3_avx2_x86-64_windows_gnu.S)
+ (targets blake3_avx2_x86-64.o)
+ (action
+  (run %{cc} -c %{deps} -o %{targets})))
+
+(rule
+ (enabled_if
+  (and
+   (= %{os_type} "Win32")
+   (= %{ocaml-config:ccomp_type} "msvc")))
+ (deps blake3_avx2_x86-64_windows_msvc.asm)
+ (targets blake3_avx2_x86-64.o)
+ (action
+  (run %{cc} -c %{deps} -o %{targets})))
+
+; avx512
+
+(rule
+ (enabled_if
+  (<> %{os_type} "Win32"))
  (deps blake3_avx512_x86-64_unix.S)
- (targets blake3_avx512_x86-64_unix.o)
+ (targets blake3_avx512_x86-64.o)
  (action
   (run %{cc} -c %{deps} -o %{targets})))
 
 (rule
+ (enabled_if
+  (and
+   (= %{os_type} "Win32")
+   (= %{ocaml-config:ccomp_type} "cc")))
+ (deps blake3_avx512_x86-64_windows_gnu.S)
+ (targets blake3_avx512_x86-64.o)
+ (action
+  (run %{cc} -c %{deps} -o %{targets})))
+
+(rule
+ (enabled_if
+  (and
+   (= %{os_type} "Win32")
+   (= %{ocaml-config:ccomp_type} "msvc")))
+ (deps blake3_avx512_x86-64_windows_msvc.asm)
+ (targets blake3_avx512_x86-64.o)
+ (action
+  (run %{cc} -c %{deps} -o %{targets})))
+
+; sse2
+
+(rule
+ (enabled_if
+  (<> %{os_type} "Win32"))
  (deps blake3_sse2_x86-64_unix.S)
- (targets blake3_sse2_x86-64_unix.o)
+ (targets blake3_sse2_x86-64.o)
  (action
   (run %{cc} -c %{deps} -o %{targets})))
 
 (rule
+ (enabled_if
+  (and
+   (= %{os_type} "Win32")
+   (= %{ocaml-config:ccomp_type} "cc")))
+ (deps blake3_sse2_x86-64_windows_gnu.S)
+ (targets blake3_sse2_x86-64.o)
+ (action
+  (run %{cc} -c %{deps} -o %{targets})))
+
+(rule
+ (enabled_if
+  (and
+   (= %{os_type} "Win32")
+   (= %{ocaml-config:ccomp_type} "msvc")))
+ (deps blake3_sse2_x86-64_windows_msvc.asm)
+ (targets blake3_sse2_x86-64.o)
+ (action
+  (run %{cc} -c %{deps} -o %{targets})))
+
+; sse41
+
+(rule
+ (enabled_if
+  (<> %{os_type} "Win32"))
  (deps blake3_sse41_x86-64_unix.S)
- (targets blake3_sse41_x86-64_unix.o)
+ (targets blake3_sse41_x86-64.o)
+ (action
+  (run %{cc} -c %{deps} -o %{targets})))
+
+(rule
+ (enabled_if
+  (and
+   (= %{os_type} "Win32")
+   (= %{ocaml-config:ccomp_type} "cc")))
+ (deps blake3_sse41_x86-64_windows_gnu.S)
+ (targets blake3_sse41_x86-64.o)
+ (action
+  (run %{cc} -c %{deps} -o %{targets})))
+
+(rule
+ (enabled_if
+  (and
+   (= %{os_type} "Win32")
+   (= %{ocaml-config:ccomp_type} "msvc")))
+ (deps blake3_sse41_x86-64_windows_msvc.asm)
+ (targets blake3_sse41_x86-64.o)
  (action
   (run %{cc} -c %{deps} -o %{targets})))
