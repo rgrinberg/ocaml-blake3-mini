@@ -9,22 +9,22 @@
  (deps blake3_avx2.c)
  (targets blake3_avx2.o)
  (action
-  (run %{bin:cc} -mavx2 -c %{deps} -o %{targets})))
+  (run %{cc} -mavx2 -c %{deps} -o %{targets})))
 
 (rule
  (deps blake3_avx512.c)
  (targets blake3_avx512.o)
  (action
-  (run %{bin:cc} -mavx512f -mavx512vl -c %{deps} -o %{targets})))
+  (run %{cc} -mavx512f -mavx512vl -c %{deps} -o %{targets})))
 
 (rule
  (deps blake3_sse2.c)
  (targets blake3_sse2.o)
  (action
-  (run %{bin:cc} -msse2 -c %{deps} -o %{targets})))
+  (run %{cc} -msse2 -c %{deps} -o %{targets})))
 
 (rule
  (deps blake3_sse41.c)
  (targets blake3_sse41.o)
  (action
-  (run %{bin:cc} -msse4.1 -c %{deps} -o %{targets})))
+  (run %{cc} -msse4.1 -c %{deps} -o %{targets})))

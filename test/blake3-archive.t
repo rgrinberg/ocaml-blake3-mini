@@ -11,6 +11,6 @@ $ nm ../vendor/libblake3.a
   > }
   > EOF
 
-  $ cc test.c ../vendor/libblake3.a -o test
+  $ ocamlopt test.c ../vendor/libblake3.a -o test
   $ ./test
   BLAKE3 version: 1.8.1
