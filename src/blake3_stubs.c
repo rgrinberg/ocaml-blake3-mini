@@ -1,10 +1,10 @@
 #include <caml/alloc.h>
+#include <caml/bigarray.h>
 #include <caml/custom.h>
 #include <caml/fail.h>
 #include <caml/memory.h>
 #include <caml/mlvalues.h>
 #include <caml/threads.h>
-#include <caml/bigarray.h>
 #include <caml/unixsupport.h>
 
 #include <unistd.h>
@@ -22,7 +22,11 @@ static inline value alloc_hash(blake3_hasher *hasher, int len) {
 
 CAMLprim value blake3_mini_fd(value v_fd) {
   CAMLparam1(v_fd);
+#ifdef _WIN32
+  int fd = win_CRT_fd_of_filedescr(v_fd);
+#else
   int fd = Int_val(v_fd);
+#endif
   caml_release_runtime_system();
 
   blake3_hasher hasher;
