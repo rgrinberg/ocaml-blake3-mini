@@ -112,5 +112,6 @@ CAMLprim value blake3_mini_feed_bigstring_unlock(value v_t, value v_s,
   blake3_hasher_update(hasher, s + pos, len);
   caml_acquire_runtime_system();
   caml_remove_global_root(&v_s);
+
   CAMLreturn(Val_unit);
 }
