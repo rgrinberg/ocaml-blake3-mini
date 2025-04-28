@@ -6,6 +6,7 @@ module Digest = struct
   let to_binary x = x
 
   let to_hex d =
+    (* Ripped off from the stdlib's [Digest.to_hex] *)
     let char_hex n =
       Char.chr (if n < 10 then Char.code '0' + n else Char.code 'a' + n - 10)
     in
