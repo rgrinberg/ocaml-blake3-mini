@@ -20,6 +20,8 @@ val feed_string :  t -> string -> pos:int -> len:int -> unit
 
 val feed_bytes :  t -> bytes -> pos:int -> len:int -> unit
 
+val feed_bigstring_release_lock : t -> (char, Bigarray.int8_unsigned_elt, Bigarray.c_layout) Bigarray.Array1.t -> pos:int -> len:int -> unit
+
 val digest : t -> Digest.t
 
 val fd : Unix.file_descr -> Digest.t

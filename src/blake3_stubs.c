@@ -4,6 +4,7 @@
 #include <caml/memory.h>
 #include <caml/mlvalues.h>
 #include <caml/threads.h>
+#include <caml/bigarray.h>
 #include <caml/unixsupport.h>
 
 #include <unistd.h>
@@ -91,5 +92,21 @@ CAMLprim value blake3_mini_feed_string(value v_t, value v_s, value v_pos,
   size_t len = Int_val(v_len);
   blake3_hasher_update(hasher, s + pos, len);
 
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value blake3_mini_feed_bigstring_unlock(value v_t, value v_s,
+                                                 value v_pos, value v_len) {
+  CAMLparam4(v_t, v_s, v_pos, v_len);
+
+  blake3_hasher *hasher = Blake3_val(v_t);
+  size_t pos = Long_val(v_pos);
+  size_t len = Long_val(v_len);
+  void *s = Caml_ba_data_val(v_s);
+  caml_register_global_root(&v_s);
+  caml_release_runtime_system();
+  blake3_hasher_update(hasher, s + pos, len);
+  caml_acquire_runtime_system();
+  caml_remove_global_root(&v_s);
   CAMLreturn(Val_unit);
 }

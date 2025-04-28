@@ -33,4 +33,6 @@ external feed_string : t -> string -> pos:int -> len:int -> unit = "blake3_mini_
 
 external feed_bytes : t -> bytes -> pos:int -> len:int -> unit = "blake3_mini_feed_string"
 
+external feed_bigstring_release_lock : t -> (char, Bigarray.int8_unsigned_elt, Bigarray.c_layout) Bigarray.Array1.t -> pos:int -> len:int -> unit = "blake3_mini_feed_bigstring_unlock"
+
 external fd : Unix.file_descr -> string = "blake3_mini_fd"
