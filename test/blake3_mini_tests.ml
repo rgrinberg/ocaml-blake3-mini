@@ -23,11 +23,26 @@ let read_file name =
   contents
 ;;
 
-let somefile = read_file "contents"
+let somefile = read_file "somefile"
 
 let%expect_test "digest with hasher" =
   let hasher = Blake3_mini.create () in
   Blake3_mini.feed_string hasher somefile ~pos:0 ~len:(String.length somefile);
+  let digest = Blake3_mini.digest hasher in
+  printf "%S\n" (Blake3_mini.Digest.to_hex digest);
+  [%expect {| "7a7d692dfca02a756fea9a8a77903807" |}]
+;;
+
+let%expect_test "digest with hasher bigstring" =
+  let hasher = Blake3_mini.create () in
+  let somefile =
+    Bigarray.Array1.init Char C_layout (String.length somefile) (String.get somefile)
+  in
+  Blake3_mini.feed_bigstring_release_lock
+    hasher
+    somefile
+    ~pos:0
+    ~len:(Bigarray.Array1.size_in_bytes somefile);
   let digest = Blake3_mini.digest hasher in
   printf "%S\n" (Blake3_mini.Digest.to_hex digest);
   [%expect {| "7a7d692dfca02a756fea9a8a77903807" |}]
