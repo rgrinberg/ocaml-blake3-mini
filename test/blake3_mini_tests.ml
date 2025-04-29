@@ -11,8 +11,8 @@ let%expect_test "128 bits fd" =
   let fd = Unix.openfile "somefile" [] 0 in
   let hash = Blake3_mini.fd fd in
   Unix.close fd;
-  printf "%S\n" (Blake3_mini.Digest.to_hex hash);
-  [%expect {| "7a7d692dfca02a756fea9a8a77903807" |}]
+  printf "%s\n" (Blake3_mini.Digest.to_hex hash);
+  [%expect {| 7a7d692dfca02a756fea9a8a77903807 |}]
 ;;
 
 let read_file name =
@@ -29,8 +29,8 @@ let%expect_test "digest with hasher" =
   let hasher = Blake3_mini.create () in
   Blake3_mini.feed_string hasher somefile ~pos:0 ~len:(String.length somefile);
   let digest = Blake3_mini.digest hasher in
-  printf "%S\n" (Blake3_mini.Digest.to_hex digest);
-  [%expect {| "7a7d692dfca02a756fea9a8a77903807" |}]
+  printf "%s\n" (Blake3_mini.Digest.to_hex digest);
+  [%expect {| 7a7d692dfca02a756fea9a8a77903807 |}]
 ;;
 
 let%expect_test "digest in pieces" =
@@ -44,8 +44,8 @@ let%expect_test "digest in pieces" =
     ~pos:slice_len
     ~len:(String.length somefile - slice_len);
   let digest = Blake3_mini.digest hasher in
-  printf "%S\n" (Blake3_mini.Digest.to_hex digest);
-  [%expect {| "7a7d692dfca02a756fea9a8a77903807" |}]
+  printf "%s\n" (Blake3_mini.Digest.to_hex digest);
+  [%expect {| 7a7d692dfca02a756fea9a8a77903807 |}]
 ;;
 
 let%expect_test "digest with hasher bigstring" =
@@ -59,6 +59,6 @@ let%expect_test "digest with hasher bigstring" =
     ~pos:0
     ~len:(Bigarray.Array1.size_in_bytes somefile);
   let digest = Blake3_mini.digest hasher in
-  printf "%S\n" (Blake3_mini.Digest.to_hex digest);
-  [%expect {| "7a7d692dfca02a756fea9a8a77903807" |}]
+  printf "%s\n" (Blake3_mini.Digest.to_hex digest);
+  [%expect {| 7a7d692dfca02a756fea9a8a77903807 |}]
 ;;
