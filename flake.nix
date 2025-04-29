@@ -3,11 +3,20 @@
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
+  inputs.dune.url = "github:alizter/dune/foreign_objects";
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, dune }:
   flake-utils.lib.eachDefaultSystem (system:
   let
-    pkgs = nixpkgs.legacyPackages."${system}";
+    pkgs =
+      nixpkgs.legacyPackages.${system}.appendOverlays [
+        (self: super: {
+          ocamlPackages = super.ocaml-ng.ocamlPackages.overrideScope (oself: osuper: {
+            dune_3 = dune.packages.${system}.default;
+          });
+        })
+      ];
+
     inherit (pkgs.ocamlPackages) buildDunePackage;
   in
   rec {
