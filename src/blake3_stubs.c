@@ -1,3 +1,5 @@
+#include <errno.h>
+
 #include <caml/alloc.h>
 #include <caml/bigarray.h>
 #include <caml/custom.h>
@@ -33,9 +35,20 @@ CAMLprim value blake3_mini_fd(value v_fd) {
   blake3_hasher_init(&hasher);
 
   char buffer[UNIX_BUFFER_SIZE];
-  size_t count;
-  while ((count = read(fd, buffer, sizeof(buffer))) != 0) {
-    blake3_hasher_update(&hasher, buffer, count);
+
+  intnat bytes_read;
+  while (1) {
+    bytes_read = read(fd, buffer, sizeof(buffer));
+    if (bytes_read == 0) {
+      break;
+    } else if (bytes_read < 0) {
+      if (errno == EINTR)
+        continue;
+      caml_acquire_runtime_system();
+      uerror("read", Nothing);
+    } else {
+      blake3_hasher_update(&hasher, buffer, bytes_read);
+    }
   }
 
   caml_acquire_runtime_system();
