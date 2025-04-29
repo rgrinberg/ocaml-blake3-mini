@@ -6,50 +6,14 @@
 
 ; TODO: Choose this during compile time
 
-(env
- (blake3-amd64-asm
-  (env-vars
-   (BLAKE3_SIMD_TYPE "amd64-asm")))
- (blake3-x86-intrinsics
-  (env-vars
-   (BLAKE3_SIMD_TYPE "x86-intrinsics")))
- (blake3-neon-intrinsics
-  (env-vars
-   (BLAKE3_SIMD_TYPE "neon-intrinsics")))
- (blake3-none
-  (env-vars
-   (BLAKE3_SIMD_TYPE "none")))
- (_))
-
 (rule
- (enabled_if
-  (or
-   (= %{env:BLAKE3_SIMD_TYPE=} "amd64-asm")
-   ;  (= %{architecture} "amd64")
-   ))
  (action
   (copy rules/blake3-amd64-asm.dune blake3_rules)))
 
 (rule
- (enabled_if
-  (or
-   (= %{env:BLAKE3_SIMD_TYPE=} "neon-intrinsics")
-   ;  (= %{architecture} "aarch64")
-   ;  (= %{architecture} "arm64")
-   ))
- (action
-  (copy rules/blake3-neon-intrinsics.dune blake3_rules)))
-
-(rule
- (enabled_if
-  (or
-   (= %{env:BLAKE3_SIMD_TYPE=} "x86-intrinsics")))
  (action
   (copy rules/blake3-x86-intrinsics.dune blake3_rules)))
 
 (rule
- (enabled_if
-  (or
-   (= %{env:BLAKE3_SIMD_TYPE=} "none")))
  (action
   (copy rules/blake3-none.dune blake3_rules)))
