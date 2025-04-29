@@ -1,0 +1,3 @@
+(executable
+ (name b3sum)
+ (libraries blake3_mini unix))
