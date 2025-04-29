@@ -10,7 +10,7 @@ license: "BSD-2-Clause"
 homepage: "https://github.com/rgrinberg/ocaml-blake3-mini"
 bug-reports: "https://github.com/rgrinberg/ocaml-blake3-mini/issues"
 depends: [
-  "dune" {>= "3.18"}
+  "dune" {>= "3.19"}
   "base-unix"
   "ppx_expect" {with-test}
   "odoc" {with-doc}
