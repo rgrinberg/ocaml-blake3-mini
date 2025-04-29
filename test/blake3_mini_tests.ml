@@ -33,6 +33,21 @@ let%expect_test "digest with hasher" =
   [%expect {| "7a7d692dfca02a756fea9a8a77903807" |}]
 ;;
 
+let%expect_test "digest in pieces" =
+  let hasher = Blake3_mini.create () in
+  let slice_len = 10 in
+  assert (slice_len <= String.length somefile);
+  Blake3_mini.feed_string hasher somefile ~pos:0 ~len:slice_len;
+  Blake3_mini.feed_string
+    hasher
+    somefile
+    ~pos:slice_len
+    ~len:(String.length somefile - slice_len);
+  let digest = Blake3_mini.digest hasher in
+  printf "%S\n" (Blake3_mini.Digest.to_hex digest);
+  [%expect {| "7a7d692dfca02a756fea9a8a77903807" |}]
+;;
+
 let%expect_test "digest with hasher bigstring" =
   let hasher = Blake3_mini.create () in
   let somefile =
