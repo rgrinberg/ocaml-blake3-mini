@@ -6,7 +6,7 @@
 
 (license BSD-2-Clause)
 (maintainers "Rudi Grinberg <me@rgrinberg.com>")
-(authors "Rudi Grinberg <me@rgrinberg.com>")
+(authors "Rudi Grinberg <me@rgrinberg.com>" "Ali Caglayan <alizter@gmail.com>")
 (source (github rgrinberg/ocaml-blake3-mini))
 
 (implicit_transitive_deps false)

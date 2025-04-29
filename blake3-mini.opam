@@ -3,7 +3,9 @@ opam-version: "2.0"
 synopsis: "Blake3 Bindings without Rust dependencies"
 description: "Blake3 Bindings without Rust dependencies"
 maintainer: ["Rudi Grinberg <me@rgrinberg.com>"]
-authors: ["Rudi Grinberg <me@rgrinberg.com>"]
+authors: [
+  "Rudi Grinberg <me@rgrinberg.com>" "Ali Caglayan <alizter@gmail.com>"
+]
 license: "BSD-2-Clause"
 homepage: "https://github.com/rgrinberg/ocaml-blake3-mini"
 bug-reports: "https://github.com/rgrinberg/ocaml-blake3-mini/issues"
