@@ -17,6 +17,3 @@
   ppx_inline_test.config)
  (preprocess
   (pps ppx_expect)))
-
-(cram
- (deps ../vendor/libblake3.a))
