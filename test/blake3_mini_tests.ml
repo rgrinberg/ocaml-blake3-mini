@@ -8,7 +8,7 @@ let test_string =
 ;;
 
 let%expect_test "128 bits fd" =
-  let fd = Unix.openfile "somefile" [] 0 in
+  let fd = Unix.openfile "somefile" [ O_RDONLY ] 0 in
   let hash = Blake3_mini.fd fd in
   Unix.close fd;
   printf "%s\n" (Blake3_mini.Digest.to_hex hash);
