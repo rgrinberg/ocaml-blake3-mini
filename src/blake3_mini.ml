@@ -4,20 +4,12 @@ module Digest = struct
   let equal = String.equal
   let compare = String.compare
   let to_binary x = x
+  let to_hex = Digest.to_hex
 
-  let to_hex d =
-    (* Ripped off from the stdlib's [Digest.to_hex] *)
-    let char_hex n =
-      Char.chr (if n < 10 then Char.code '0' + n else Char.code 'a' + n - 10)
-    in
-    let len = String.length d in
-    let result = Bytes.create (len * 2) in
-    for i = 0 to len - 1 do
-      let x = Char.code d.[i] in
-      Bytes.unsafe_set result (i * 2) (char_hex (x lsr 4));
-      Bytes.unsafe_set result ((i * 2) + 1) (char_hex (x land 0x0f))
-    done;
-    Bytes.unsafe_to_string result
+  let of_hex s =
+    match Digest.of_hex s with
+    | s -> Some s
+    | exception Invalid_argument _ -> None
   ;;
 end
 

@@ -5,6 +5,7 @@ module Digest : sig
   val compare : t -> t -> int
   val to_binary : t -> string
   val to_hex : t -> string
+  val of_hex : string -> t option
 end
 
 type t
