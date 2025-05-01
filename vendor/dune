@@ -31,7 +31,7 @@
  (deps blake3_avx512.c)
  (targets blake3_avx512.o)
  (action
-  (run %{cc} -mavx512f -mavx512vl -c %{deps} -o %{targets})))
+  (run %{cc} -mavx512f -mavx512vl -mavx512bw -c %{deps} -o %{targets})))
 
 (rule
  (enabled_if
