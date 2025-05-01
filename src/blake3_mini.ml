@@ -18,7 +18,7 @@ module Digest = struct
   let to_hex = Digest.to_hex
 
   let of_hex s =
-    match Digest.of_hex s with
+    match Digest.from_hex s with
     | s -> Some s
     | exception Invalid_argument _ -> None
   ;;
