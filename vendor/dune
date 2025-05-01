@@ -13,7 +13,7 @@
   (= %{architecture} "amd64"))
  (archive_name blake3)
  (language c)
- (flags -O2)
+ (flags :standard -O2)
  (names blake3 blake3_portable blake3_dispatch)
  (extra_objects blake3_avx2 blake3_avx512 blake3_sse2 blake3_sse41))
 
@@ -58,7 +58,7 @@
    (= %{architecture} "aarch64")))
  (archive_name blake3)
  (language c)
- (flags -O2)
+ (flags :standard -O2)
  (names blake3 blake3_portable blake3_dispatch blake3_neon))
 
 ; portable C implementation
@@ -72,6 +72,7 @@
  (archive_name blake3)
  (language c)
  (flags
+  :standard
   -O2
   "-DBLAKE3_NO_SSE2"
   "-DBLAKE3_NO_SSE41"
