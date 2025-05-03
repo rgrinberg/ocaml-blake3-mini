@@ -16,10 +16,60 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - macos-latest
           - ubuntu-latest
+          - macos-latest
+          - macos-13
+        flake:
+          - default
+          - ocaml_4_14
+
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
-      - run: nix develop -c dune build @runtest
+      - run: nix develop .#${{ matrix.flake }} -c ocamlc -config
+      - run: nix develop .#${{ matrix.flake }} -c dune build @runtest
+
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # OCaml 5.2.x:
+          - name: x86_64 Ubuntu 5.2.x
+            os: ubuntu-latest
+            ocaml-compiler: 5.2.x
+          - name: arm64 macOS 5.2.x
+            os: macos-latest
+            ocaml-compiler: 5.2.x
+          # macOS x86_64
+          - name: x86_64 macOS 5.2.x
+            os: macos-13
+            ocaml-compiler: 5.2.x
+          # MSVC OCaml 4.14.x
+          - name: x86_64 Windows MSVC 4.14.2
+            os: windows-latest
+            ocaml-compiler: ocaml-base-compiler.4.14.2,system-msvc
+          # mingw OCaml 5.2.1
+          - name: x86_64 Windows mingw 5.2.1
+            os: windows-latest
+            ocaml-compiler: ocaml-base-compiler.5.2.1,system-mingw
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout tree
+        uses: actions/checkout@v4
+
+      - name: Set-up OCaml
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+      - run: opam pin add dune "https://github.com/ocaml/dune.git#b2f0411" -y
+
+      - run: opam install . --deps-only --with-test --ignore-constraints-on=dune
+      - run: opam exec -- ocamlc -config
+
+      - run: opam exec -- dune build
+
+      - run: opam exec -- dune runtest
