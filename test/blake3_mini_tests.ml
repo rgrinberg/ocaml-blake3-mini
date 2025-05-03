@@ -1,3 +1,35 @@
+module Bigarray = struct
+  (* For <= 4.12 *)
+  include Bigarray
+
+  module Array1 = struct
+    include Array1
+
+    let c_init arr dim f =
+      for i = 0 to pred dim do
+        unsafe_set arr i (f i)
+      done
+    ;;
+
+    let fortran_init arr dim f =
+      for i = 1 to dim do
+        unsafe_set arr i (f i)
+      done
+    ;;
+
+    let init (type t) kind (layout : t layout) dim f =
+      let arr = create kind layout dim in
+      match layout with
+      | C_layout ->
+        c_init arr dim f;
+        arr
+      | Fortran_layout ->
+        fortran_init arr dim f;
+        arr
+    ;;
+  end
+end
+
 let printf = Printf.printf
 
 let test_string =
