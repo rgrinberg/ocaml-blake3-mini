@@ -9,8 +9,6 @@
 #include <caml/threads.h>
 #include <caml/unixsupport.h>
 
-#include <unistd.h>
-
 #include "blake3.h"
 
 #define Blake3_val(v) (*(blake3_hasher **)Data_custom_val(v))
