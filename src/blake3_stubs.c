@@ -9,8 +9,6 @@
 #include <caml/threads.h>
 #include <caml/unixsupport.h>
 
-#include <unistd.h>
-
 #include "blake3.h"
 
 #define Blake3_val(v) (*(blake3_hasher **)Data_custom_val(v))
@@ -119,7 +117,7 @@ CAMLprim value blake3_mini_feed_bigstring_unlock(value v_t, value v_s,
   blake3_hasher *hasher = Blake3_val(v_t);
   size_t pos = Long_val(v_pos);
   size_t len = Long_val(v_len);
-  void *s = Caml_ba_data_val(v_s);
+  char *s = Caml_ba_data_val(v_s);
   caml_register_global_root(&v_s);
   caml_release_runtime_system();
   blake3_hasher_update(hasher, s + pos, len);
