@@ -8,16 +8,15 @@
         "ocaml-overlays": "ocaml-overlays"
       },
       "locked": {
-        "lastModified": 1745962858,
-        "narHash": "sha256-Kq8a21JuHPIyVPOTh3TZ7TAjyBdWdvy8eGi9rIp02ak=",
-        "owner": "alizter",
+        "lastModified": 1746294260,
+        "narHash": "sha256-oYBL0aPmzKexQnM0mScQtdEjr0kJD9/wVXlgEeTjBKM=",
+        "owner": "ocaml",
         "repo": "dune",
-        "rev": "43bbc07e0dbec7b7ffbe0c2ab83fb5c8c593227b",
+        "rev": "7c61d1663148187d0528de6e92145c38f60f55c7",
         "type": "github"
       },
       "original": {
-        "owner": "alizter",
-        "ref": "foreign_objects",
+        "owner": "ocaml",
         "repo": "dune",
         "type": "github"
       }
@@ -121,11 +120,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1745962631,
-        "narHash": "sha256-TNXPxyqNBdqN3jd0bOewv/UWfE/Rdacq+pT172FNePI=",
+        "lastModified": 1746293460,
+        "narHash": "sha256-BM2DHKofmPh8v1TDC3ShMpjfHf1Wx5GyDf8lTjdR/ME=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "396cd353446cbaf45fd56e5c312ea4d11735bfc4",
+        "rev": "01e6f1370cb704e6fdc848ca3f1e38fc70f4112e",
         "type": "github"
       },
       "original": {
