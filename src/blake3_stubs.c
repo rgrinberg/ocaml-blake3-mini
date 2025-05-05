@@ -16,7 +16,7 @@
 static inline value alloc_hash(blake3_hasher *hasher, int len) {
   value v_ret = caml_alloc_string(len);
   const char *ret = String_val(v_ret);
-  blake3_hasher_finalize(hasher, (uint8_t *)String_val(ret), len);
+  blake3_hasher_finalize(hasher, (uint8_t *) ret, len);
   return v_ret;
 }
 
