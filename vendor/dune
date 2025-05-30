@@ -21,7 +21,7 @@
  (enabled_if
   (= %{architecture} "amd64"))
  (deps blake3_avx2.c)
- (targets blake3_avx2.o)
+ (targets blake3_avx2%{ext_obj})
  (action
   (run %{cc} -mavx2 -c %{deps} -o %{targets})))
 
@@ -29,7 +29,7 @@
  (enabled_if
   (= %{architecture} "amd64"))
  (deps blake3_avx512.c)
- (targets blake3_avx512.o)
+ (targets blake3_avx512%{ext_obj})
  (action
   (run %{cc} -mavx512f -mavx512vl -mavx512bw -c %{deps} -o %{targets})))
 
@@ -37,7 +37,7 @@
  (enabled_if
   (= %{architecture} "amd64"))
  (deps blake3_sse2.c)
- (targets blake3_sse2.o)
+ (targets blake3_sse2%{ext_obj})
  (action
   (run %{cc} -msse2 -c %{deps} -o %{targets})))
 
@@ -45,7 +45,7 @@
  (enabled_if
   (= %{architecture} "amd64"))
  (deps blake3_sse41.c)
- (targets blake3_sse41.o)
+ (targets blake3_sse41%{ext_obj})
  (action
   (run %{cc} -msse4.1 -c %{deps} -o %{targets})))
 
